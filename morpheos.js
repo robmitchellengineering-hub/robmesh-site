@@ -6,12 +6,14 @@
   if (!card || !frame) return;
 
   let loaded = false;
-  card.addEventListener('toggle', () => {
-    if (card.open && !loaded) {
+  function load() {
+    if (!loaded) {
       loaded = true;
       frame.src = frame.getAttribute('data-src');
     }
-  });
+  }
+  card.addEventListener('toggle', () => { if (card.open) load(); });
+  if (card.open) load();
 
   const btn = document.querySelector('[data-fs-target="morpheos-frame"]');
   if (btn) {

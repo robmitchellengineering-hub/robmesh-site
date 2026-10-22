@@ -78,8 +78,8 @@
     <table>
       <thead><tr><th>node</th><th>role</th><th>platform</th><th>capabilities</th><th>status</th></tr></thead>
       <tbody id="machine-rows"><tr><td><strong>mac</strong></td><td>orchestrator</td><td>macos</td><td class="caps">shell:posix, dsh:headless, git:push, audio:output, audio:input, radio:wifi, band:2.4ghz, measure:e8-rob-io-timing, measure:e9-stream, build:macos, build:rust, ci:self-hosted-runner, morpheus:portable, morpheus:cloud (+4 cond.)</td><td><span class="idle">idle</span></td></tr>
-<tr><td><strong>pacland-rog</strong></td><td>physical Linux</td><td>linux</td><td class="caps">shell:posix, net:ethernet, radio:wifi, net:wifi, audio:output, git:push, git:clone (+3 cond.)</td><td><span class="working">working (14)</span></td></tr>
-<tr><td><strong>studio-linux</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="idle">idle</span></td></tr>
+<tr><td><strong>pacland-rog</strong></td><td>physical Linux</td><td>linux</td><td class="caps">shell:posix, net:ethernet, radio:wifi, net:wifi, audio:output, git:push, git:clone (+3 cond.)</td><td><span class="working">working (13)</span></td></tr>
+<tr><td><strong>studio-linux</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="working">working (1)</span></td></tr>
 <tr><td><strong>studio-linux2</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="idle">idle</span></td></tr>
 <tr><td><strong>win-2</strong></td><td>measurement bench (Legion)</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, band:6ghz, build:node, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, net:ethernet, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr>
 <tr><td><strong>win</strong></td><td>field host · 2nd builder</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr></tbody>
@@ -121,7 +121,7 @@
       <thead><tr><th>project</th><th>what it is</th></tr></thead>
       <tbody>
         <tr><td><strong>Morpheus</strong></td><td>the AI-native app builder — plans, codes, reviews and verifies its own build, then deploys (Netlify + Northflank). The "digital possibility engine".<div class="plinks"><a href="https://morpheus.nz" target="_blank" rel="noopener">morpheus.nz</a> · <a href="https://github.com/robmitchellengineering-hub/morpheus-self-hosted" target="_blank" rel="noopener">github</a></div></td></tr>
-        <tr><td><strong>MorpheOS</strong></td><td>the AI-native operating system (Rust) — compositor + Linux distro target.<div class="plinks"><a href="https://robmitchellengineering-hub.github.io/MorpheOS/" target="_blank" rel="noopener">explainer</a> · <a href="https://github.com/robmitchellengineering-hub/MorpheOS" target="_blank" rel="noopener">code</a></div><details class="projcard" id="morpheos-card"><summary>▶ Watch it boot <span class="hint">— tap to expand</span></summary><div class="meshstage"><iframe id="morpheos-frame" class="morph-frame" data-src="morpheos/login.html" title="MorpheOS boot animation" allow="fullscreen"></iframe><button class="fs-btn" data-fs-target="morpheos-frame" type="button">⛶ Fullscreen</button></div></details></td></tr>
+        <tr><td><strong>MorpheOS</strong></td><td>the AI-native operating system (Rust) — compositor + Linux distro target.<div class="plinks"><a href="https://robmitchellengineering-hub.github.io/MorpheOS/" target="_blank" rel="noopener">explainer</a> · <a href="https://github.com/robmitchellengineering-hub/MorpheOS" target="_blank" rel="noopener">code</a></div></td></tr>
         <tr><td><strong>AirMatrix</strong></td><td>the field measurement rig — audio, radio and RF timing (rob-io / rob-probe), run on the Legion bench.<div class="plinks priv">private · patent review</div></td></tr>
         <tr><td><strong>Pacland</strong></td><td>the physics stream — counting flux vacua (string theory), the theorem paper.<div class="plinks"><a href="https://github.com/robmitchellengineering-hub/pacland" target="_blank" rel="noopener">github</a> · <a href="https://pacland.netlify.app" target="_blank" rel="noopener">pacland.netlify.app</a> · <a href="https://doi.org/10.5281/zenodo.23497239" target="_blank" rel="noopener">paper (DOI)</a></div></td></tr>
         <tr><td><strong>Valiant Verification</strong></td><td>the verification SDK — named gates + mutation proofs, so a green check means something.<div class="plinks priv">private</div></td></tr>
@@ -129,7 +129,16 @@
     </table>
   </div>
 
-  <footer>Live-generated 2026-10-22T06:19:11.062Z · from <code>nodes/*.json</code> + job queues</footer>
+  <h2>MorpheOS boot screen</h2>
+  <details class="glass meshcard" id="morpheos-card" open>
+    <summary>▶ Watch MorpheOS boot <span class="hint">— the real launch animation, tap to collapse</span></summary>
+    <div class="meshstage">
+      <iframe id="morpheos-frame" class="morph-frame" data-src="morpheos/login.html" title="MorpheOS boot animation" allow="fullscreen"></iframe>
+      <button class="fs-btn" data-fs-target="morpheos-frame" type="button">⛶ Fullscreen</button>
+    </div>
+  </details>
+
+  <footer>Live-generated 2026-10-22T06:59:52.463Z · from <code>nodes/*.json</code> + job queues</footer>
 </div>
 
 <script src="vendor/three.min.js"></script>
