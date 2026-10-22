@@ -113,7 +113,7 @@ float fbm(vec3 p){
   return v;
 }
 `;
-  const NEBULA_R = 2.52, GEOMESH_R = NEBULA_R * 0.58;
+  const NEBULA_R = 1.26, GEOMESH_R = NEBULA_R * 0.58;
   const nebulaMat = new THREE.ShaderMaterial({
     uniforms: { uTime: { value: 0 }, uAmp: { value: 0.13 } },
     vertexShader: `
@@ -186,6 +186,52 @@ float fbm(vec3 p){
     scene.add(m);
     irisRings.push(m);
   }
+
+  // ---- the mesh computers: geomesh orbs cabled to the nebula ----------------
+  // 2 working (matrix green) + the rest online (deepseek blue) — "puppy mode" is idle.
+  const NODE_R = 0.30;
+  const nodeGlowTex = glowTexture();
+  const NODE_GREEN = new THREE.Color(0x00ff41).convertSRGBToLinear();
+  const NODE_BLUE = new THREE.Color(0x4d6bfe).convertSRGBToLinear();
+  const NODE_DEFS = [
+    { vm: false, working: true },   // win-2
+    { vm: false, working: true },   // win
+    { vm: true,  working: false },  // studio-linux
+    { vm: true,  working: false },  // studio-linux2
+    { vm: false, working: false },  // pacland-rog
+  ];
+  const nodeOrbs = [], pulsePool = [];
+  NODE_DEFS.forEach((n, i) => {
+    const a = (i / NODE_DEFS.length) * Math.PI * 2;
+    const R = 2.4;
+    const px = Math.cos(a) * R, py = Math.sin(a * 2.4) * 0.28, pz = Math.sin(a) * R;
+    const col = n.working ? NODE_GREEN : NODE_BLUE;
+    const group = new THREE.Group();
+    group.position.set(px, py, pz);
+    const geo = n.vm ? new THREE.ConeGeometry(NODE_R * 0.9, NODE_R * 1.2, 4) : new THREE.SphereGeometry(NODE_R * 0.9, 6, 4);
+    group.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: col, wireframe: true, transparent: true, opacity: 1.0, depthWrite: false, toneMapped: false })));
+    const geo2 = n.vm ? new THREE.ConeGeometry(NODE_R * 1.06, NODE_R * 1.4, 4) : new THREE.SphereGeometry(NODE_R * 1.06, 6, 4);
+    group.add(new THREE.Mesh(geo2, new THREE.MeshBasicMaterial({ color: col, wireframe: true, transparent: true, opacity: 0.6, depthWrite: false, toneMapped: false })));
+    const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: nodeGlowTex, color: n.working ? 0x00ff41 : 0x4d6bfe, transparent: true, opacity: n.working ? 0.5 : 0.22, blending: THREE.AdditiveBlending, depthWrite: false }));
+    glow.scale.set(NODE_R * 2.6, NODE_R * 2.6, 1);
+    group.add(glow);
+    scene.add(group);
+    nodeOrbs.push({ group, i, baseY: py });
+
+    // cable from the nebula out to this computer
+    const cg = new THREE.BufferGeometry();
+    cg.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0, 0, 0, px, py, pz]), 3));
+    scene.add(new THREE.Line(cg, new THREE.LineBasicMaterial({ color: 0x7cc8ff, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false })));
+
+    // data pulses on this cable (more for working nodes)
+    const np = n.working ? 3 : 2;
+    for (let k = 0; k < np; k++) {
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: nodeGlowTex, color: n.working ? 0x00ff41 : 0x4d6bfe, transparent: true, opacity: 0.9, depthWrite: false, toneMapped: false, blending: THREE.AdditiveBlending }));
+      sp.scale.setScalar(0.14);
+      scene.add(sp);
+      pulsePool.push({ sp, px, py, pz, t: Math.random(), dir: 1, speed: 0.3 + Math.random() * 0.3 });
+    }
+  });
 
   const _d = new THREE.Vector3(), _up = new THREE.Vector3(0, 1, 0);
 
@@ -265,6 +311,19 @@ float fbm(vec3 p){
     for (const ring of irisRings) {
       ring.rotation.z += ring.userData.spin * dt;
       ring.rotation.x = 0.16 * 0.6 + Math.sin(t * 0.3) * 0.03;
+    }
+
+    // computers: idle roll + bob (working ones glow harder)
+    for (const n of nodeOrbs) {
+      n.group.rotation.y += dt * 0.6;
+      n.group.position.y = n.baseY + Math.sin(t * 0.9 + n.i) * 0.1;
+    }
+    // data running along the cables
+    for (const p of pulsePool) {
+      p.t += p.dir * p.speed * dt;
+      if (p.t > 1) { p.t = 1; p.dir = -1; }
+      else if (p.t < 0) { p.t = 0; p.dir = 1; }
+      p.sp.position.set(p.px * p.t, p.py * p.t, p.pz * p.t);
     }
 
     composer.render();
