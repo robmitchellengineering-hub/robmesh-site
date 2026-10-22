@@ -41,6 +41,14 @@
   .meshkey { margin-top: .4rem; font-size: .74rem; color: #7f90ab; }
   .pulse-dot { display: inline-block; width: .6em; height: .6em; border-radius: 50%; vertical-align: baseline; }
   .pulse-dot.out { background: #7ee2a8; } .pulse-dot.in { background: #7cc8ff; }
+  .fs-btn { position: absolute; top: 10px; right: 10px; z-index: 2; background: rgba(10,16,28,.72); color: #7cc8ff; border: 1px solid rgba(124,200,255,.4); border-radius: 8px; padding: .32rem .7rem; font-size: .8rem; cursor: pointer; backdrop-filter: blur(4px); }
+  .fs-btn:hover { color: #a8dcff; border-color: #a8dcff; background: rgba(16,24,40,.85); }
+  #mesh-canvas:fullscreen, .morph-frame:fullscreen { width: 100vw; height: 100vh; border-radius: 0; border: none; }
+  .morph-frame { width: 100%; height: 430px; display: block; border: 0; border-radius: 10px; background: #05070d; }
+  .projcard { margin-top: .7rem; border: 1px solid rgba(120,150,200,.15); border-radius: 10px; padding: .35rem .7rem; background: rgba(5,7,13,.35); }
+  .projcard summary { cursor: pointer; color: #d3dceb; font-size: .95rem; list-style: none; user-select: none; }
+  .projcard summary::-webkit-details-marker { display: none; }
+  .projcard summary .hint { color: #5a6b85; font-size: .78rem; font-weight: 400; }
   footer { margin-top: 3rem; color: #5a6b85; font-size: .8rem; }
 </style>
 </head>
@@ -49,6 +57,16 @@
 <div class="wrap">
   <h1>ROB <span class="dim">MESH</span></h1>
   <p class="lede">One person, several machines, one DeepSeek Harness on each — and git as the wire between them. No server in the middle.</p>
+
+  <details class="glass meshcard" id="meshcard" open>
+    <summary>▶ Watch the mesh operate <span class="hint">— tap to collapse</span></summary>
+    <div class="meshstage">
+      <canvas id="mesh-canvas"></canvas>
+      <button id="mesh-fs" class="fs-btn" type="button" title="Expand to full screen">⛶ Fullscreen</button>
+      <div class="meshlegend" id="mesh-legend"></div>
+      <div class="meshkey"><span class="pulse-dot out"></span> job dispatched (push) &nbsp;·&nbsp; <span class="pulse-dot in"></span> result returned (pull)</div>
+    </div>
+  </details>
 
   <div class="glass">
     <h2 style="margin-top:0">What it is</h2>
@@ -60,8 +78,8 @@
     <table>
       <thead><tr><th>node</th><th>role</th><th>platform</th><th>capabilities</th><th>status</th></tr></thead>
       <tbody id="machine-rows"><tr><td><strong>mac</strong></td><td>orchestrator</td><td>macos</td><td class="caps">shell:posix, dsh:headless, git:push, audio:output, audio:input, radio:wifi, band:2.4ghz, measure:e8-rob-io-timing, measure:e9-stream, build:macos, build:rust, ci:self-hosted-runner, morpheus:portable, morpheus:cloud (+4 cond.)</td><td><span class="idle">idle</span></td></tr>
-<tr><td><strong>pacland-rog</strong></td><td>physical Linux</td><td>linux</td><td class="caps">shell:posix, net:ethernet, radio:wifi, net:wifi, audio:output, git:push, git:clone (+3 cond.)</td><td><span class="working">working (4)</span></td></tr>
-<tr><td><strong>studio-linux</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="working">working (1)</span></td></tr>
+<tr><td><strong>pacland-rog</strong></td><td>physical Linux</td><td>linux</td><td class="caps">shell:posix, net:ethernet, radio:wifi, net:wifi, audio:output, git:push, git:clone (+3 cond.)</td><td><span class="working">working (14)</span></td></tr>
+<tr><td><strong>studio-linux</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="idle">idle</span></td></tr>
 <tr><td><strong>studio-linux2</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="idle">idle</span></td></tr>
 <tr><td><strong>win-2</strong></td><td>measurement bench (Legion)</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, band:6ghz, build:node, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, net:ethernet, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr>
 <tr><td><strong>win</strong></td><td>field host · 2nd builder</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr></tbody>
@@ -103,7 +121,7 @@
       <thead><tr><th>project</th><th>what it is</th></tr></thead>
       <tbody>
         <tr><td><strong>Morpheus</strong></td><td>the AI-native app builder — plans, codes, reviews and verifies its own build, then deploys (Netlify + Northflank). The "digital possibility engine".<div class="plinks"><a href="https://morpheus.nz" target="_blank" rel="noopener">morpheus.nz</a> · <a href="https://github.com/robmitchellengineering-hub/morpheus-self-hosted" target="_blank" rel="noopener">github</a></div></td></tr>
-        <tr><td><strong>MorpheOS</strong></td><td>the AI-native operating system (Rust) — compositor + Linux distro target.<div class="plinks"><a href="https://github.com/robmitchellengineering-hub/MorpheOS" target="_blank" rel="noopener">github</a></div></td></tr>
+        <tr><td><strong>MorpheOS</strong></td><td>the AI-native operating system (Rust) — compositor + Linux distro target.<div class="plinks"><a href="https://robmitchellengineering-hub.github.io/MorpheOS/" target="_blank" rel="noopener">explainer</a> · <a href="https://github.com/robmitchellengineering-hub/MorpheOS" target="_blank" rel="noopener">code</a></div><details class="projcard" id="morpheos-card"><summary>▶ Watch it boot <span class="hint">— tap to expand</span></summary><div class="meshstage"><iframe id="morpheos-frame" class="morph-frame" data-src="morpheos/login.html" title="MorpheOS boot animation" allow="fullscreen"></iframe><button class="fs-btn" data-fs-target="morpheos-frame" type="button">⛶ Fullscreen</button></div></details></td></tr>
         <tr><td><strong>AirMatrix</strong></td><td>the field measurement rig — audio, radio and RF timing (rob-io / rob-probe), run on the Legion bench.<div class="plinks priv">private · patent review</div></td></tr>
         <tr><td><strong>Pacland</strong></td><td>the physics stream — counting flux vacua (string theory), the theorem paper.<div class="plinks"><a href="https://github.com/robmitchellengineering-hub/pacland" target="_blank" rel="noopener">github</a> · <a href="https://pacland.netlify.app" target="_blank" rel="noopener">pacland.netlify.app</a> · <a href="https://doi.org/10.5281/zenodo.23497239" target="_blank" rel="noopener">paper (DOI)</a></div></td></tr>
         <tr><td><strong>Valiant Verification</strong></td><td>the verification SDK — named gates + mutation proofs, so a green check means something.<div class="plinks priv">private</div></td></tr>
@@ -111,22 +129,13 @@
     </table>
   </div>
 
-  <h2>Watch it operate</h2>
-  <details class="glass meshcard" id="meshcard">
-    <summary>▶ Watch the mesh operate <span class="hint">— demo, tap to expand</span></summary>
-    <div class="meshstage">
-      <canvas id="mesh-canvas"></canvas>
-      <div class="meshlegend" id="mesh-legend"></div>
-      <div class="meshkey"><span class="pulse-dot out"></span> job dispatched (push) &nbsp;·&nbsp; <span class="pulse-dot in"></span> result returned (pull)</div>
-    </div>
-  </details>
-
-  <footer>Live-generated 2026-10-22T05:04:26.606Z · from <code>nodes/*.json</code> + job queues</footer>
+  <footer>Live-generated 2026-10-22T06:19:11.062Z · from <code>nodes/*.json</code> + job queues</footer>
 </div>
 
 <script src="vendor/three.min.js"></script>
 <script src="vendor/ships.js"></script>
 <script src="site.js"></script>
 <script src="meshlive.js"></script>
+<script src="morpheos.js"></script>
 </body>
 </html>

@@ -223,8 +223,28 @@
     if (details.open) resize();
   });
 
-  window.addEventListener('resize', () => { if (details.open) resize(); });
+  // fullscreen toggle — the demo card expands to fill the viewport
+  const fsBtn = document.getElementById('mesh-fs');
+  if (fsBtn) {
+    fsBtn.addEventListener('click', () => {
+      const el = document.fullscreenElement || document.webkitFullscreenElement;
+      if (el) {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      } else if (canvas.requestFullscreen) {
+        canvas.requestFullscreen();
+      } else if (canvas.webkitRequestFullscreen) {
+        canvas.webkitRequestFullscreen();
+      }
+    });
+  }
+  const onFullscreen = () => resize();
+  document.addEventListener('fullscreenchange', onFullscreen);
+  document.addEventListener('webkitfullscreenchange', onFullscreen);
 
-  // start the loop immediately (cheap when `running` is false) so first expand is instant
-  requestAnimationFrame(loop);
+  window.addEventListener('resize', () => { if (details.open || document.fullscreenElement) resize(); });
+
+  // if the card is open on first load, start immediately; otherwise start the cheap loop
+  if (details.open) { running = true; init(); }
+  if (!started) requestAnimationFrame(loop);
 })();
