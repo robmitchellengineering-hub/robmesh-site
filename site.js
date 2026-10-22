@@ -15,6 +15,12 @@
   camera.position.set(0, 0.6, 12);
   camera.lookAt(0, 0, 0);
 
+  // bloom, so the nebula glows like the board's Eye of God
+  const composer = new THREE.EffectComposer(renderer);
+  composer.addPass(new THREE.RenderPass(scene, camera));
+  const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.55, 0.45, 0.58);
+  composer.addPass(bloomPass);
+
   // ---- round glow texture (star orbs) -------------------------------------
   function glowTexture() {
     const c = document.createElement('canvas'); c.width = c.height = 128;
@@ -75,9 +81,9 @@
     const g = new THREE.Group();
     g.add(ship);
     const a = (i / KEYS.length) * Math.PI * 2;
-    g.position.set(Math.cos(a) * 6, Math.sin(a) * 3.4, -2 + Math.random() * 4);
+    g.position.set(Math.cos(a) * 4.5, Math.sin(a) * 2.2, -1 + Math.random() * 2);
     shipGroup.add(g);
-    fleet.push({ g, ship, a, va: 0.04 + Math.random() * 0.06, r: 5.5 + Math.random() * 1.2, z: -2 + Math.random() * 4, color: RobShips.build(KEYS[i]).userData.color });
+    fleet.push({ g, ship, a, va: 0.04 + Math.random() * 0.06, r: 4.3 + Math.random() * 0.7, z: -1 + Math.random() * 2, color: RobShips.build(KEYS[i]).userData.color });
   }
 
   // laser beams (thin hot core + glow)
@@ -218,7 +224,7 @@ float fbm(vec3 p){
       const f = fleet[i];
       f.a += f.va * dt;
       f.g.position.x = Math.cos(f.a) * f.r;
-      f.g.position.y = Math.sin(f.a) * f.r * 0.6;
+      f.g.position.y = Math.sin(f.a) * f.r * 0.5;
       f.g.position.z = f.z + Math.sin(t * 0.6 + i) * 0.6;
       f.g.lookAt(0, 0, 0);
       f.g.rotateY(Math.PI / 2);
@@ -261,13 +267,15 @@ float fbm(vec3 p){
       ring.rotation.x = 0.16 * 0.6 + Math.sin(t * 0.3) * 0.03;
     }
 
-    renderer.render(scene, camera);
+    composer.render();
   }
 
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    composer.setSize(window.innerWidth, window.innerHeight);
+    bloomPass.resolution.set(window.innerWidth, window.innerHeight);
   });
 
   frame();

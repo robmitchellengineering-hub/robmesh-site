@@ -14,7 +14,7 @@
     font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     text-shadow: 0 1px 12px rgba(0,0,0,.85);
   }
-  .glass { background: rgba(8,13,24,.72); border: 1px solid rgba(120,150,200,.18); border-radius: 14px; padding: 1.1rem 1.35rem; backdrop-filter: blur(6px); }
+  .glass { background: rgba(8,13,24,.58); border: 1px solid rgba(120,150,200,.18); border-radius: 14px; padding: 1.1rem 1.35rem; backdrop-filter: blur(6px); }
   h1 { font-size: 2.6rem; margin: 0 0 .2rem; letter-spacing: .04em; }
   h1 .dim { color: #5a6b85; }
   .lede { color: #b9c6db; font-size: 1.15rem; margin: 0 0 2rem; }
@@ -71,7 +71,7 @@
 <tr><td><strong>pacland-rog</strong></td><td>physical Linux</td><td>linux</td><td class="caps">shell:posix, net:ethernet, radio:wifi, net:wifi, audio:output, git:push, git:clone (+3 cond.)</td><td><span class="working">working (13)</span></td></tr>
 <tr><td><strong>studio-linux</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="working">working (1)</span></td></tr>
 <tr><td><strong>studio-linux2</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="idle">idle</span></td></tr>
-<tr><td><strong>win-2</strong></td><td>measurement bench (Legion)</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, band:6ghz, build:node, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, net:ethernet, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="working">working (1)</span></td></tr>
+<tr><td><strong>win-2</strong></td><td>measurement bench (Legion)</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, band:6ghz, build:node, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, net:ethernet, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr>
 <tr><td><strong>win</strong></td><td>field host · 2nd builder</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr></tbody>
     </table>
   </div>
@@ -129,11 +129,19 @@
     </div>
   </details>
 
-  <footer>Live-generated 2026-10-22T08:01:08.864Z · from <code>nodes/*.json</code> + job queues</footer>
+  <footer>Live-generated 2026-10-22T08:12:37.983Z · from <code>nodes/*.json</code> + job queues</footer>
 </div>
 
 <script src="vendor/three.min.js"></script>
 <script src="vendor/ships.js"></script>
+<script src="morpheos/vendor/Pass.js"></script>
+<script src="morpheos/vendor/CopyShader.js"></script>
+<script src="morpheos/vendor/LuminosityHighPassShader.js"></script>
+<script src="morpheos/vendor/MaskPass.js"></script>
+<script src="morpheos/vendor/ShaderPass.js"></script>
+<script src="morpheos/vendor/RenderPass.js"></script>
+<script src="morpheos/vendor/EffectComposer.js"></script>
+<script src="morpheos/vendor/UnrealBloomPass.js"></script>
 <script src="site.js"></script>
 <script src="morpheos.js"></script>
 </body>
