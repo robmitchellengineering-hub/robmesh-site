@@ -55,10 +55,26 @@
 
   <h2>Agent fan-out</h2>
   <div class="glass">
-    <p style="margin:0">One parent session fans out to <strong>up to 6 concurrent child agents</strong>, nesting to <strong>depth 3</strong> — bounded by model tokens and rate limits, not CPU. Children return results and stay addressable; a workflow script can fan out across many agents at once.</p>
+    <p style="margin:0">One parent session fans out to <strong>up to 6 concurrent child agents</strong>, nesting to <strong>depth 3</strong>. A fully-expanded tree is <strong>1 → 6 → 36 → 216 = 259 agents</strong> from a single instruction (workflow cap 1000) — bounded by model tokens and rate limits, not CPU.</p>
+    <p style="margin:.7rem 0 0">What that lets us do: one "go" fans out across every machine and every file at once — a repo audit that reads each module in parallel, a multi-angle research sprint that compares independent agents' notes, a cross-OS build/verify matrix dispatched across the nodes. The mesh runs a <em>tree</em> of work, then folds the results back up.</p>
   </div>
 
-  <footer>Live-generated 2026-10-22T04:10:36.208Z · from <code>nodes/*.json</code> + job queues</footer>
+  <h2>The projects</h2>
+  <div class="glass" style="padding:.5rem 1rem">
+    <table>
+      <thead><tr><th>project</th><th>what it is</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Morpheus</strong></td><td>the AI-native app builder — plans, codes, reviews and verifies its own build, then deploys (Netlify + Northflank). The "digital possibility engine".</td></tr>
+        <tr><td><strong>MorpheOS</strong></td><td>the AI-native operating system (Rust) — compositor + Linux distro target.</td></tr>
+        <tr><td><strong>AirMatrix</strong></td><td>the field measurement rig — audio, radio and RF timing (rob-io / rob-probe), run on the Legion bench.</td></tr>
+        <tr><td><strong>Pacland</strong></td><td>the physics stream — counting flux vacua (string theory), the theorem paper.</td></tr>
+        <tr><td><strong>WikiData Uploader</strong></td><td>batch-uploads structured data to Wikidata.</td></tr>
+        <tr><td><strong>Valiant Verification</strong></td><td>the verification SDK — named gates + mutation proofs, so a green check means something.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>Live-generated 2026-10-22T04:12:46.173Z · from <code>nodes/*.json</code> + job queues</footer>
 </div>
 
 <script src="vendor/three.min.js"></script>
