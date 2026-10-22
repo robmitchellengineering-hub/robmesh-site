@@ -7,6 +7,8 @@
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 300);
@@ -91,6 +93,94 @@
     return { core, glow, until: 0 };
   });
 
+  // ---- the living nebula (the orchestrator, in the middle) ------------------
+  const NOISE_GLSL = `
+float hash(vec3 p){ p=fract(p*0.3183099+0.1); p*=17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+float noise(vec3 x){
+  vec3 i=floor(x); vec3 f=fract(x); f=f*f*(3.0-2.0*f);
+  return mix(mix(mix(hash(i),hash(i+vec3(1.0,0.0,0.0)),f.x),mix(hash(i+vec3(0.0,1.0,0.0)),hash(i+vec3(1.0,1.0,0.0)),f.x),f.y),
+             mix(mix(hash(i+vec3(0.0,0.0,1.0)),hash(i+vec3(1.0,0.0,1.0)),f.x),mix(hash(i+vec3(0.0,1.0,1.0)),hash(i+vec3(1.0,1.0,1.0)),f.x),f.y),f.z);
+}
+float fbm(vec3 p){
+  float v=0.0; float a=0.5;
+  for(int i=0;i<4;i++){ v+=a*noise(p); p*=2.03; a*=0.5; }
+  return v;
+}
+`;
+  const NEBULA_R = 2.52, GEOMESH_R = NEBULA_R * 0.58;
+  const nebulaMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 }, uAmp: { value: 0.13 } },
+    vertexShader: `
+      uniform float uTime; uniform float uAmp;
+      varying vec3 vNormal; varying vec3 vWorld; varying float vNoise;
+      ${NOISE_GLSL}
+      void main(){
+        vec3 p=position;
+        float ang=p.y*1.4+uTime*0.4;
+        float c=cos(ang); float s=sin(ang);
+        vec3 sp=vec3(c*p.x-s*p.z, p.y, s*p.x+c*p.z);
+        float d=fbm(normalize(sp)*2.4+uTime*0.2);
+        vNoise=d;
+        vec3 np=sp+normal*d*uAmp;
+        vNormal=normalize(normalMatrix*normal);
+        vec4 wp=modelMatrix*vec4(np,1.0);
+        vWorld=wp.xyz;
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(np,1.0);
+      }`,
+    fragmentShader: `
+      uniform float uTime;
+      varying vec3 vNormal; varying vec3 vWorld; varying float vNoise;
+      ${NOISE_GLSL}
+      vec3 ramp(float t){
+        vec3 teal=vec3(0.10,0.60,0.75); vec3 blue=vec3(0.16,0.44,0.85);
+        vec3 green=vec3(0.25,0.82,0.55); vec3 pink=vec3(0.95,0.36,0.55); vec3 red=vec3(0.95,0.24,0.38);
+        vec3 col=mix(teal,blue,smoothstep(0.0,0.3,t));
+        col=mix(col,green,smoothstep(0.3,0.55,t));
+        col=mix(col,pink,smoothstep(0.55,0.8,t));
+        col=mix(col,red,smoothstep(0.8,1.0,t));
+        return col;
+      }
+      void main(){
+        vec3 n=normalize(vNormal);
+        vec3 vd=normalize(cameraPosition-vWorld);
+        float fres=pow(1.0-clamp(dot(n,vd),0.0,1.0),2.0);
+        vec3 dir=normalize(vWorld);
+        float d=fbm(dir*2.6+uTime*0.12);
+        float radial=1.0-fres;
+        float t=clamp(radial*0.65+d*0.35,0.0,1.0);
+        vec3 col=ramp(t);
+        float luma=dot(col,vec3(0.2126,0.7152,0.0722));
+        col=clamp(mix(vec3(luma),col,1.30),0.0,1.0);
+        float dens=smoothstep(0.15,0.85,d);
+        float i=dens*0.95+fres*0.18+vNoise*0.12+0.08;
+        gl_FragColor=vec4(col*i,1.0);
+      }`,
+    transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.FrontSide,
+  });
+  const nebula = new THREE.Mesh(new THREE.SphereGeometry(NEBULA_R, 64, 64), nebulaMat);
+  scene.add(nebula);
+  const nebulaGeom = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(GEOMESH_R, 1),
+    new THREE.MeshBasicMaterial({ color: 0x8fd8ff, wireframe: true, transparent: true, opacity: 0.34, depthWrite: false })
+  );
+  scene.add(nebulaGeom);
+  const irisRings = [];
+  const ringDefs = [
+    { r: NEBULA_R * 1.18, tube: 0.035, color: 0x06b6d4, op: 0.32, tilt: 0.16, spin: 0.25 },
+    { r: NEBULA_R * 1.42, tube: 0.028, color: 0x6ea8ff, op: 0.26, tilt: -0.12, spin: -0.2 },
+  ];
+  for (const rd of ringDefs) {
+    const m = new THREE.Mesh(
+      new THREE.TorusGeometry(rd.r, rd.tube, 12, 128),
+      new THREE.MeshBasicMaterial({ color: rd.color, transparent: true, opacity: rd.op, blending: THREE.AdditiveBlending, depthWrite: false })
+    );
+    m.rotation.x = rd.tilt * 0.6;
+    m.rotation.y = rd.tilt;
+    m.userData = { spin: rd.spin };
+    scene.add(m);
+    irisRings.push(m);
+  }
+
   const _d = new THREE.Vector3(), _up = new THREE.Vector3(0, 1, 0);
 
   // ---- loop -----------------------------------------------------------------
@@ -160,6 +250,15 @@
       if (k <= 0) { beam.core.visible = beam.glow.visible = false; continue; }
       beam.core.material.opacity = k;
       beam.glow.material.opacity = 0.55 * k;
+    }
+
+    // the nebula lives
+    nebulaMat.uniforms.uTime.value = t;
+    nebulaGeom.rotation.y = t * 0.12;
+    nebulaGeom.rotation.x = Math.sin(t * 0.2) * 0.2;
+    for (const ring of irisRings) {
+      ring.rotation.z += ring.userData.spin * dt;
+      ring.rotation.x = 0.16 * 0.6 + Math.sin(t * 0.3) * 0.03;
     }
 
     renderer.render(scene, camera);

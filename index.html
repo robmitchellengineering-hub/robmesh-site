@@ -58,16 +58,6 @@
   <h1>ROB <span class="dim">MESH</span></h1>
   <p class="lede">One person, several machines, one DeepSeek Harness on each — and git as the wire between them. No server in the middle.</p>
 
-  <details class="glass meshcard" id="meshcard" open>
-    <summary>▶ Watch the mesh operate <span class="hint">— tap to collapse</span></summary>
-    <div class="meshstage">
-      <canvas id="mesh-canvas"></canvas>
-      <button id="mesh-fs" class="fs-btn" type="button" title="Expand to full screen">⛶ Fullscreen</button>
-      <div class="meshlegend" id="mesh-legend"></div>
-      <div class="meshkey"><span class="pulse-dot out"></span> job dispatched (push) &nbsp;·&nbsp; <span class="pulse-dot in"></span> result returned (pull)</div>
-    </div>
-  </details>
-
   <div class="glass">
     <h2 style="margin-top:0">What it is</h2>
     <p style="margin-bottom:0">Each machine runs a DeepSeek Harness agent. The agents can't see each other and there is no central server, so shared state lives in git: <code>git pull</code> is "check my inbox", <code>git push</code> is "send". The orchestrator plans and dispatches; the nodes execute — a job is placed in a machine's queue, its loop picks it up, runs it, and pushes the result back. A job isn't real until it's pushed.</p>
@@ -139,13 +129,12 @@
     </div>
   </details>
 
-  <footer>Live-generated 2026-10-22T07:38:33.974Z · from <code>nodes/*.json</code> + job queues</footer>
+  <footer>Live-generated 2026-10-22T08:01:08.864Z · from <code>nodes/*.json</code> + job queues</footer>
 </div>
 
 <script src="vendor/three.min.js"></script>
 <script src="vendor/ships.js"></script>
 <script src="site.js"></script>
-<script src="meshlive.js"></script>
 <script src="morpheos.js"></script>
 </body>
 </html>
