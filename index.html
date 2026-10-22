@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rob Mesh — one person, several machines, one harness each</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin: 0; background: #05070d; }
+  #bg { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; }
+  .wrap {
+    position: relative; z-index: 1; max-width: 960px; margin: 0 auto;
+    padding: 3rem 1.25rem 6rem; color: #e6ebf2;
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    text-shadow: 0 1px 12px rgba(0,0,0,.85);
+  }
+  .glass { background: rgba(8,13,24,.72); border: 1px solid rgba(120,150,200,.18); border-radius: 14px; padding: 1.1rem 1.35rem; backdrop-filter: blur(6px); }
+  h1 { font-size: 2.6rem; margin: 0 0 .2rem; letter-spacing: .04em; }
+  h1 .dim { color: #5a6b85; }
+  .lede { color: #b9c6db; font-size: 1.15rem; margin: 0 0 2rem; }
+  h2 { margin-top: 2.4rem; color: #7cc8ff; font-size: 1.2rem; }
+  p { color: #d3dceb; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background: rgba(255,255,255,.08); border-radius: 4px; padding: .1em .35em; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
+  th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid rgba(255,255,255,.08); vertical-align: top; }
+  th { color: #8fa6d8; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+  .caps { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .8rem; color: #9fb0c8; }
+  .idle { color: #7ee2a8; } .working { color: #ffd54d; }
+  footer { margin-top: 3rem; color: #5a6b85; font-size: .8rem; }
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="wrap">
+  <h1>ROB <span class="dim">MESH</span></h1>
+  <p class="lede">One person, several machines, one DeepSeek Harness on each — and git as the wire between them. No server in the middle.</p>
+
+  <div class="glass">
+    <h2 style="margin-top:0">What it is</h2>
+    <p style="margin-bottom:0">Each machine runs a DeepSeek Harness agent. The agents can't see each other and there is no central server, so shared state lives in git: <code>git pull</code> is "check my inbox", <code>git push</code> is "send". The orchestrator plans and dispatches; the nodes execute — a job is placed in a machine's queue, its loop picks it up, runs it, and pushes the result back. A job isn't real until it's pushed.</p>
+  </div>
+
+  <h2>The machines</h2>
+  <div class="glass" style="padding:.5rem 1rem">
+    <table>
+      <thead><tr><th>node</th><th>role</th><th>platform</th><th>capabilities</th><th>status</th></tr></thead>
+      <tbody id="machine-rows"><tr><td><strong>mac</strong></td><td>orchestrator</td><td>macos</td><td class="caps">shell:posix, dsh:headless, git:push, audio:output, audio:input, radio:wifi, band:2.4ghz, measure:e8-rob-io-timing, measure:e9-stream, build:macos, build:rust, ci:self-hosted-runner, morpheus:portable, morpheus:cloud (+4 cond.)</td><td><span class="idle">idle</span></td></tr>
+<tr><td><strong>pacland-rog</strong></td><td>physical Linux</td><td>linux</td><td class="caps">shell:posix, net:ethernet, radio:wifi, net:wifi, audio:output, git:push, git:clone (+3 cond.)</td><td><span class="working">working (4)</span></td></tr>
+<tr><td><strong>studio-linux</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="working">working (1)</span></td></tr>
+<tr><td><strong>studio-linux2</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="idle">idle</span></td></tr>
+<tr><td><strong>win-2</strong></td><td>measurement bench (Legion)</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, band:6ghz, build:node, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, net:ethernet, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr>
+<tr><td><strong>win</strong></td><td>field host · 2nd builder</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr></tbody>
+    </table>
+  </div>
+
+  <h2>Agent fan-out</h2>
+  <div class="glass">
+    <p style="margin:0">One parent session fans out to <strong>up to 6 concurrent child agents</strong>, nesting to <strong>depth 3</strong> — bounded by model tokens and rate limits, not CPU. Children return results and stay addressable; a workflow script can fan out across many agents at once.</p>
+  </div>
+
+  <footer>Live-generated 2026-10-22T04:10:36.208Z · from <code>nodes/*.json</code> + job queues</footer>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/ships.js"></script>
+<script src="site.js"></script>
+</body>
+</html>
