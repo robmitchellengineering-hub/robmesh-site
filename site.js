@@ -71,7 +71,7 @@
   scene.add(shipGroup);
   const fleet = [];
   const KEYS = ['enterprise', 'falcon', 'xwing', 'valiant', 'viper', 'serenity'];
-  const SHIP_SCALE = 0.35;
+  const SHIP_SCALE = 0.55;
   for (let i = 0; i < KEYS.length; i++) {
     const ship = RobShips.build(KEYS[i]);
     const len = ship.userData.length || 1.5;
