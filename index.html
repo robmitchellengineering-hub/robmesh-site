@@ -68,6 +68,29 @@
     </table>
   </div>
 
+  <h2>Specs</h2>
+  <div class="glass" style="padding:.5rem 1rem">
+    <table>
+      <thead><tr><th>what</th><th>spec</th></tr></thead>
+      <tbody>
+        <tr><td>Nodes</td><td>6 — four physical machines (Mac orchestrator, Legion Go, field laptop, GL752VW Linux) plus two Linux VMs on the Legion</td></tr>
+        <tr><td>Transport</td><td>git only, no server — <code>pull</code> is inbox, <code>push</code> is send</td></tr>
+        <tr><td>Jobs</td><td>1 per node at a time — deliberately serial, so a result is attributable to one machine</td></tr>
+        <tr><td>Fastest builder</td><td>Legion Go — Ryzen Z1 Extreme, 16 threads, 13 GB usable, hosts both Linux VMs</td></tr>
+        <tr><td>Field radio</td><td>Wi-Fi 6E on the Legion — 2.4 / 5 / 6 GHz at 160 MHz, the only 6 GHz client on the mesh</td></tr>
+        <tr><td>AirMatrix matrix</td><td>512 × 512, 64 buses, 11,643 crosspoints — 246 µs per block (18.5% of one core)</td></tr>
+        <tr><td>AirMatrix audio</td><td>24-bit, ultra-low latency, sync target ±100 µs</td></tr>
+        <tr><td>MorpheOS scale</td><td>Pi Zero 2 W (512 MB RAM) up to enterprise servers</td></tr>
+        <tr><td>Morpheus targets</td><td>10 — web, Android, iOS, macOS, Windows, Linux, Python, Arduino, Raspberry Pi, Linux distro</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Minimum to run it</h2>
+  <div class="glass">
+    <p style="margin:0">To <strong>join as a node</strong>: any machine with <code>git</code> and a route to the hub (Tailscale or GitHub) — a spare laptop or a Pi will do. To <strong>run an agent</strong> on it, add Node.js + the DeepSeek Harness. To <strong>build</strong>, add the matching toolchain (Rust for Rust work, Linux for Linux builds). MorpheOS itself starts at a Pi Zero 2 W.</p>
+  </div>
+
   <h2>Agent fan-out</h2>
   <div class="glass">
     <p style="margin:0">One parent session fans out to <strong>up to 6 concurrent child agents</strong>, nesting to <strong>depth 3</strong>. A fully-expanded tree is <strong>1 → 6 → 36 → 216 = 259 agents</strong> from a single instruction (workflow cap 1000) — bounded by model tokens and rate limits, not CPU.</p>
@@ -98,7 +121,7 @@
     </div>
   </details>
 
-  <footer>Live-generated 2026-10-22T04:21:46.074Z · from <code>nodes/*.json</code> + job queues</footer>
+  <footer>Live-generated 2026-10-22T05:04:26.606Z · from <code>nodes/*.json</code> + job queues</footer>
 </div>
 
 <script src="vendor/three.min.js"></script>
