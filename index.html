@@ -26,6 +26,21 @@
   th { color: #8fa6d8; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
   .caps { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .8rem; color: #9fb0c8; }
   .idle { color: #7ee2a8; } .working { color: #ffd54d; }
+  .plinks { margin-top: .45rem; font-size: .82rem; }
+  .plinks a { color: #7cc8ff; text-decoration: none; border-bottom: 1px solid rgba(124,200,255,.35); }
+  .plinks a:hover { color: #a8dcff; border-bottom-color: #a8dcff; }
+  .plinks.priv { color: #6b7a94; }
+  .meshcard summary { cursor: pointer; font-size: 1.05rem; color: #d3dceb; padding: .35rem .2rem; list-style: none; user-select: none; }
+  .meshcard summary::-webkit-details-marker { display: none; }
+  .meshcard summary .hint { color: #5a6b85; font-size: .78rem; font-weight: 400; }
+  .meshstage { margin-top: .8rem; }
+  #mesh-canvas { width: 100%; height: 430px; display: block; border-radius: 10px; background: radial-gradient(circle at 50% 42%, #0b1426, #04060c 72%); border: 1px solid rgba(120,150,200,.15); }
+  .meshlegend { display: flex; flex-wrap: wrap; gap: .35rem 1rem; margin-top: .65rem; font-size: .78rem; color: #b9c6db; }
+  .meshlegend .chip { display: inline-flex; align-items: center; gap: .4rem; }
+  .meshlegend .dot { width: .68em; height: .68em; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px currentColor; }
+  .meshkey { margin-top: .4rem; font-size: .74rem; color: #7f90ab; }
+  .pulse-dot { display: inline-block; width: .6em; height: .6em; border-radius: 50%; vertical-align: baseline; }
+  .pulse-dot.out { background: #7ee2a8; } .pulse-dot.in { background: #7cc8ff; }
   footer { margin-top: 3rem; color: #5a6b85; font-size: .8rem; }
 </style>
 </head>
@@ -64,21 +79,31 @@
     <table>
       <thead><tr><th>project</th><th>what it is</th></tr></thead>
       <tbody>
-        <tr><td><strong>Morpheus</strong></td><td>the AI-native app builder — plans, codes, reviews and verifies its own build, then deploys (Netlify + Northflank). The "digital possibility engine".</td></tr>
-        <tr><td><strong>MorpheOS</strong></td><td>the AI-native operating system (Rust) — compositor + Linux distro target.</td></tr>
-        <tr><td><strong>AirMatrix</strong></td><td>the field measurement rig — audio, radio and RF timing (rob-io / rob-probe), run on the Legion bench.</td></tr>
-        <tr><td><strong>Pacland</strong></td><td>the physics stream — counting flux vacua (string theory), the theorem paper.</td></tr>
-        <tr><td><strong>WikiData Uploader</strong></td><td>batch-uploads structured data to Wikidata.</td></tr>
-        <tr><td><strong>Valiant Verification</strong></td><td>the verification SDK — named gates + mutation proofs, so a green check means something.</td></tr>
+        <tr><td><strong>Morpheus</strong></td><td>the AI-native app builder — plans, codes, reviews and verifies its own build, then deploys (Netlify + Northflank). The "digital possibility engine".<div class="plinks"><a href="https://morpheus.nz" target="_blank" rel="noopener">morpheus.nz</a> · <a href="https://github.com/robmitchellengineering-hub/morpheus-self-hosted" target="_blank" rel="noopener">github</a></div></td></tr>
+        <tr><td><strong>MorpheOS</strong></td><td>the AI-native operating system (Rust) — compositor + Linux distro target.<div class="plinks"><a href="https://github.com/robmitchellengineering-hub/MorpheOS" target="_blank" rel="noopener">github</a></div></td></tr>
+        <tr><td><strong>AirMatrix</strong></td><td>the field measurement rig — audio, radio and RF timing (rob-io / rob-probe), run on the Legion bench.<div class="plinks priv">private · patent review</div></td></tr>
+        <tr><td><strong>Pacland</strong></td><td>the physics stream — counting flux vacua (string theory), the theorem paper.<div class="plinks"><a href="https://github.com/robmitchellengineering-hub/pacland" target="_blank" rel="noopener">github</a> · <a href="https://pacland.netlify.app" target="_blank" rel="noopener">pacland.netlify.app</a> · <a href="https://doi.org/10.5281/zenodo.23497239" target="_blank" rel="noopener">paper (DOI)</a></div></td></tr>
+        <tr><td><strong>Valiant Verification</strong></td><td>the verification SDK — named gates + mutation proofs, so a green check means something.<div class="plinks priv">private</div></td></tr>
       </tbody>
     </table>
   </div>
 
-  <footer>Live-generated 2026-10-22T04:12:46.173Z · from <code>nodes/*.json</code> + job queues</footer>
+  <h2>Watch it operate</h2>
+  <details class="glass meshcard" id="meshcard">
+    <summary>▶ Watch the mesh operate <span class="hint">— demo, tap to expand</span></summary>
+    <div class="meshstage">
+      <canvas id="mesh-canvas"></canvas>
+      <div class="meshlegend" id="mesh-legend"></div>
+      <div class="meshkey"><span class="pulse-dot out"></span> job dispatched (push) &nbsp;·&nbsp; <span class="pulse-dot in"></span> result returned (pull)</div>
+    </div>
+  </details>
+
+  <footer>Live-generated 2026-10-22T04:21:46.074Z · from <code>nodes/*.json</code> + job queues</footer>
 </div>
 
 <script src="vendor/three.min.js"></script>
 <script src="vendor/ships.js"></script>
 <script src="site.js"></script>
+<script src="meshlive.js"></script>
 </body>
 </html>
