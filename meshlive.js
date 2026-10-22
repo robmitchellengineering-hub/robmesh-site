@@ -12,7 +12,7 @@
   if (!details || !canvas) return;
 
   let renderer, scene, camera, clock, started = false, running = false;
-  let world, shipNodes = [], pulsePool = [];
+  let world, shipNodes = [], pulsePool = [], OUT, IN;
 
   function lin(hex) { return new THREE.Color(hex).convertSRGBToLinear(); }
 
@@ -130,7 +130,7 @@
 
     // ---- pulses travelling the wire ------------------------------------------
     const glow = glowTexture();
-    const OUT = lin(0x7ee2a8), IN = lin(0x7cc8ff);
+    OUT = lin(0x7ee2a8); IN = lin(0x7cc8ff);
     const PULSES = 14;
     for (let i = 0; i < PULSES; i++) {
       const mat = new THREE.SpriteMaterial({ map: glow, color: OUT, transparent: true, opacity: 0.95, depthWrite: false, toneMapped: false, blending: THREE.AdditiveBlending });
