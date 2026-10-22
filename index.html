@@ -81,7 +81,7 @@
 <tr><td><strong>pacland-rog</strong></td><td>physical Linux</td><td>linux</td><td class="caps">shell:posix, net:ethernet, radio:wifi, net:wifi, audio:output, git:push, git:clone (+3 cond.)</td><td><span class="working">working (13)</span></td></tr>
 <tr><td><strong>studio-linux</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="working">working (1)</span></td></tr>
 <tr><td><strong>studio-linux2</strong></td><td>Linux VM + CI runner</td><td>linux</td><td class="caps">shell:posix, net:ethernet, node:js, git:push, git:clone (+6 cond.)</td><td><span class="idle">idle</span></td></tr>
-<tr><td><strong>win-2</strong></td><td>measurement bench (Legion)</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, band:6ghz, build:node, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, net:ethernet, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr>
+<tr><td><strong>win-2</strong></td><td>measurement bench (Legion)</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, band:6ghz, build:node, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, net:ethernet, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="working">working (1)</span></td></tr>
 <tr><td><strong>win</strong></td><td>field host · 2nd builder</td><td>windows</td><td class="caps">audio:input, audio:output, band:2.4ghz, band:5ghz, build:rust, build:windows, dsh:cli, dsh:headless, git:push, measure:e8-rob-io-timing, powershell:5.1, radio:wifi, shell:windows (+3 cond.)</td><td><span class="idle">idle</span></td></tr></tbody>
     </table>
   </div>
@@ -131,14 +131,15 @@
 
   <h2>MorpheOS boot screen</h2>
   <details class="glass meshcard" id="morpheos-card" open>
-    <summary>▶ Watch MorpheOS boot <span class="hint">— the real launch animation, tap to collapse</span></summary>
+    <summary>▶ Watch MorpheOS boot <span class="hint">— tap the animation to play, sound on</span></summary>
     <div class="meshstage">
-      <iframe id="morpheos-frame" class="morph-frame" src="https://robmitchellengineering-hub.github.io/MorpheOS/" title="MorpheOS boot animation" allow="fullscreen; autoplay"></iframe>
+      <iframe id="morpheos-frame" class="morph-frame" src="morpheos/login.html" title="MorpheOS boot animation" allow="fullscreen; autoplay"></iframe>
       <button class="fs-btn" data-fs-target="morpheos-frame" type="button">⛶ Fullscreen</button>
+      <div class="meshkey">▶ tap the animation to start — audio + picture on the same beat, then it loops</div>
     </div>
   </details>
 
-  <footer>Live-generated 2026-10-22T07:24:21.919Z · from <code>nodes/*.json</code> + job queues</footer>
+  <footer>Live-generated 2026-10-22T07:38:33.974Z · from <code>nodes/*.json</code> + job queues</footer>
 </div>
 
 <script src="vendor/three.min.js"></script>
