@@ -5,7 +5,7 @@
  *
  * WIREFRAME geomesh approximations of famous spaceships (and one Valiant Charger),
  * built from low-poly primitives so each reads as a faceted "geomesh" — the same
- * visual language as the board's node orbs (Icosahedron + wireframe, DeepSeek blue,
+ * visual language as the board's node orbs (Icosahedron + wireframe, harness blue,
  * tone-mapped OFF so the colour lands exactly).
  *
  * Loaded AFTER vendor/three.min.js. Defines window.RobShips.

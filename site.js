@@ -188,7 +188,7 @@ float fbm(vec3 p){
   }
 
   // ---- the mesh computers: geomesh orbs cabled to the nebula ----------------
-  // 2 working (matrix green) + the rest online (deepseek blue) — "puppy mode" is idle.
+  // 2 working (matrix green) + the rest online (harness blue) — "puppy mode" is idle.
   const NODE_R = 0.30;
   const nodeGlowTex = glowTexture();
   const NODE_GREEN = new THREE.Color(0x00ff41).convertSRGBToLinear();

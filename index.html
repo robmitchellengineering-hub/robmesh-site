@@ -56,11 +56,11 @@
 <canvas id="bg"></canvas>
 <div class="wrap">
   <h1>ROB <span class="dim">MESH</span></h1>
-  <p class="lede">One person, several machines, one DeepSeek Harness on each — and git as the wire between them. No server in the middle.</p>
+  <p class="lede">One person, several machines, one AI harness on each — and git as the wire between them. No server in the middle.</p>
 
   <div class="glass">
     <h2 style="margin-top:0">What it is</h2>
-    <p style="margin-bottom:0">Each machine runs a DeepSeek Harness agent. The agents can't see each other and there is no central server, so shared state lives in git: <code>git pull</code> is "check my inbox", <code>git push</code> is "send". The orchestrator plans and dispatches; the nodes execute — a job is placed in a machine's queue, its loop picks it up, runs it, and pushes the result back. A job isn't real until it's pushed.</p>
+    <p style="margin-bottom:0">Each machine runs an AI harness agent. The agents can't see each other and there is no central server, so shared state lives in git: <code>git pull</code> is "check my inbox", <code>git push</code> is "send". The orchestrator plans and dispatches; the nodes execute — a job is placed in a machine's queue, its loop picks it up, runs it, and pushes the result back. A job isn't real until it's pushed.</p>
   </div>
 
   <h2>The machines</h2>
@@ -96,7 +96,7 @@
 
   <h2>Minimum to run it</h2>
   <div class="glass">
-    <p style="margin:0">To <strong>join as a node</strong>: any machine with <code>git</code> and a route to the hub (Tailscale or GitHub) — a spare laptop or a Pi will do. To <strong>run an agent</strong> on it, add Node.js + the DeepSeek Harness. To <strong>build</strong>, add the matching toolchain (Rust for Rust work, Linux for Linux builds). MorpheOS itself starts at a Pi Zero 2 W.</p>
+    <p style="margin:0">To <strong>join as a node</strong>: any machine with <code>git</code> and a route to the hub (Tailscale or GitHub) — a spare laptop or a Pi will do. To <strong>run an agent</strong> on it, add Node.js + an AI harness. To <strong>build</strong>, add the matching toolchain (Rust for Rust work, Linux for Linux builds). MorpheOS itself starts at a Pi Zero 2 W.</p>
   </div>
 
   <h2>Agent fan-out</h2>
