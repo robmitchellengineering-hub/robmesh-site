@@ -50,6 +50,46 @@
   .projcard summary::-webkit-details-marker { display: none; }
   .projcard summary .hint { color: #5a6b85; font-size: .78rem; font-weight: 400; }
   footer { margin-top: 3rem; color: #5a6b85; font-size: .8rem; }
+
+  /* --- mobile: a wide table becomes cards ---------------------------------
+     Rob, 2026-10-23: "on the website the machines section doesnt render formatted
+     properly on mobile ... its all off the card and i cant see the info". The
+     machine table is five columns of long unbroken capability tokens; below 760px
+     it ran past the card and the status column was never visible. These rules are
+     layout only - no content changes, desktop is untouched. */
+  @media (max-width: 760px) {
+    table.machines thead, table.specs thead, table.projects thead { display: none; }
+    table.machines tr, table.specs tr, table.projects tr {
+      display: grid; grid-template-columns: 1fr auto; gap: .15rem .6rem;
+      padding: .8rem 0; border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    table.machines td, table.specs td, table.projects td { display: block; border: 0; padding: 0; }
+
+    table.machines td:nth-child(1) { grid-column: 1; font-size: 1.05rem; }
+    table.machines td:nth-child(5) { grid-column: 2; grid-row: 1; text-align: right; font-size: .85rem; white-space: nowrap; }
+    table.machines td:nth-child(2) {
+      grid-column: 1; grid-row: 2; color: #93a6c2; font-size: .82rem;
+    }
+    table.machines td:nth-child(3) {
+      grid-column: 2; grid-row: 2; text-align: right; color: #6f80a0; font-size: .78rem;
+    }
+    table.machines td:nth-child(4) { grid-column: 1 / -1; grid-row: 3; margin-top: .4rem; }
+    table.machines td.caps {
+      font-size: .72rem; line-height: 1.5; color: #8ea3bd;
+      overflow-wrap: anywhere; word-break: break-word;
+    }
+    table.machines td.caps::before {
+      content: "capabilities"; display: block; color: #6f7f9a; font-size: .68rem;
+      letter-spacing: .1em; text-transform: uppercase; margin-bottom: .15rem;
+    }
+
+    table.specs td:nth-child(1), table.projects td:nth-child(1) {
+      grid-column: 1 / -1; color: #8fa6d8; font-size: .78rem;
+      letter-spacing: .08em; text-transform: uppercase; margin-bottom: .1rem;
+    }
+    table.specs td:nth-child(2), table.projects td:nth-child(2) { grid-column: 1 / -1; }
+    table.projects td:nth-child(1) { text-transform: none; letter-spacing: 0; font-size: 1rem; color: #e6ebf2; }
+  }
 </style>
 </head>
 <body>
@@ -65,7 +105,7 @@
 
   <h2>The machines</h2>
   <div class="glass" style="padding:.5rem 1rem">
-    <table>
+    <table class="machines">
       <thead><tr><th>node</th><th>role</th><th>platform</th><th>capabilities</th><th>status</th></tr></thead>
       <tbody id="machine-rows"><tr><td><strong>mac</strong></td><td>orchestrator</td><td>macos</td><td class="caps">shell:posix, dsh:headless, git:push, audio:output, audio:input, radio:wifi, band:2.4ghz, measure:e8-rob-io-timing, measure:e9-stream, build:macos, build:rust, ci:self-hosted-runner, morpheus:portable, morpheus:cloud (+4 cond.)</td><td><span class="idle">idle</span></td></tr>
 <tr><td><strong>pacland-rog</strong></td><td>physical Linux</td><td>linux</td><td class="caps">shell:posix, net:ethernet, radio:wifi, net:wifi, audio:output, git:push, git:clone (+3 cond.)</td><td><span class="working">working (13)</span></td></tr>
@@ -78,7 +118,7 @@
 
   <h2>Specs</h2>
   <div class="glass" style="padding:.5rem 1rem">
-    <table>
+    <table class="specs">
       <thead><tr><th>what</th><th>spec</th></tr></thead>
       <tbody>
         <tr><td>Nodes</td><td>6 — four physical machines (Mac orchestrator, Legion Go, field laptop, GL752VW Linux) plus two Linux VMs on the Legion</td></tr>
@@ -107,7 +147,7 @@
 
   <h2>The projects</h2>
   <div class="glass" style="padding:.5rem 1rem">
-    <table>
+    <table class="projects">
       <thead><tr><th>project</th><th>what it is</th></tr></thead>
       <tbody>
         <tr><td><strong>Morpheus</strong></td><td>the AI-native app builder — plans, codes, reviews and verifies its own build, then deploys. The "digital possibility engine".<div class="plinks"><a href="https://morpheus.nz" target="_blank" rel="noopener">site</a> · <a href="https://github.com/robmitchellengineering-hub/morpheus-self-hosted" target="_blank" rel="noopener">code</a></div></td></tr>
